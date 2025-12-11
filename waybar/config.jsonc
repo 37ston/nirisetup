@@ -1,0 +1,200 @@
+{
+		// "reload_style_on_change": true, // debug purpose
+		"layer": "top",
+		"spacing": 4,
+		"exclusive": true,
+		"margin-top": 5,
+		"margin-left": 7,
+		"margin-right": 7,
+		"modules-left": [
+			"niri/workspaces",
+			"custom/sep",
+	    	"disk",
+	    	"cpu",
+	    	"memory",
+			"custom/sep",
+			"niri/window"
+	   
+		],
+		"modules-right": [
+			"group/info",
+			"custom/sep",
+			"mpris",
+			"network",
+			"backlight",
+			"wireplumber",
+			"battery",
+			"custom/sep",
+			"clock"
+			//"group/power"
+			
+		],
+		"niri/workspaces": {
+			"format": "{icon}",
+			"format-icons": {
+				 "default": "",
+				 "active": "",
+			},
+			"persistent-workspaces": {
+				"*": 5,
+			}
+		},
+	    "group/info": {
+	      "orientation": "inherit",
+
+	      "modules": ["tray", "custom/notifications"]
+	    },
+	
+	    "custom/notifications": {
+	      "tooltip": false,
+	      // I don't know why "{icon} {}" doesn't work
+	      "format": "{icon}",
+	      "format-icons": {
+	        "notification": "󱅫",
+	        "none": "󰂚",
+	        "dnd-notification": "󰂛",
+	        "dnd-none": "󰂛",
+	        "inhibited-notification": "󰂚",
+	        "inhibited-none": "󰂚",
+	        "dnd-inhibited-notification": "󰂛",
+	        "dnd-inhibited-none": "󰂛"
+	      },
+	      "return-type": "json",
+	      "exec-if": "which swaync-client",
+	      "exec": "swaync-client -swb",
+	      "on-click": "swaync-client -t -sw",
+	      "on-click-right": "swaync-client -d -sw",
+	      "escape": true
+	    },
+	  "disk": {
+	    "interval": 30,
+	    "format": " {percentage_free}%"
+	  },
+	  "memory": {
+	    "format": " {percentage}%"
+	  },
+	  "cpu": {
+	    "format": "  {usage}%"
+	  },
+	
+		"clock": {
+			"interval": 1,
+			"format": "{:%A, %B %d   %H:%M:%S}",
+			"format-alt": "{:%d/%m/%y %I:%M:%S %p}",
+			"tooltip-format": "<tt><small>{calendar}</small></tt>",
+			"calendar": {
+	            "mode"          : "month",
+	            "mode-mon-col"  : 3,
+	            "weeks-pos"     : "right",
+	            "on-scroll"     : 1,
+	            "format": {
+					"months":     "<span color='#DCD7BA'><b>{}</b></span>",
+	                "days":       "<span color='#DCD7BA'><b>{}</b></span>",
+	                "weeks":      "",
+	                "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
+	                "today":      "<span color='#236b84'><b><u>{}</u></b></span>"
+	            },
+				"actions": {
+					"on-click-right": "mode",
+					"on-scroll-up": "shift_up",
+					"on-scroll-down": "shift_down",
+				},
+	        },
+		},
+		"tray": {
+			"icon-size": 13,
+			"spacing": 5,
+		},
+		"custom/sep": {
+			"format": "|",
+			"tooltip": false,
+		},
+		 "mpris": {
+ 		"format": "  {status_icon} {dynamic}",
+        "interval": 1,
+        "dynamic-len": 40,
+		"status-icons": {
+		"playing": "▶",
+		"paused": "⏸",
+		"stopped": ""
+	},
+		"dynamic-order": ["title", "artist"],
+		"ignored-players": ["firefox"]
+    },
+	 "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+		"backlight": {
+  			"device": "acpi_video0",
+  			"format": "{icon} {percent}%",
+  			"format-icons": [ "🔅", "🔆", "☀️" ],  // low, mid, high
+  			"tooltip-format": "Brightness: {percent}%",
+  			"on-click": "brightnessctl set +10%",
+  			"on-click-right": "brightnessctl set 10%-"
+		},
+
+		"wireplumber": {
+			"format": "{icon}   {volume}%",
+			"format-muted": "",
+			"tooltip-format": "Volume: {volume}%",
+			"on-click": "pavucontrol",
+			"format-icons": ["", "", ""]
+		},
+		"network": {
+			"format-wifi": "",
+			"tooltip-format-wifi": "{essid} ({signalStrength}%)",
+			"format-ethernet": "",
+			"tooltip-format-ethernet": "",
+			"format-disconnected": "",
+			"tooltip-format-disconnected": "disconnected",
+	
+			"on-click": "kitty nmtui"
+		},
+		"battery": {
+			"interval": 60,
+			"states": {
+				"warning": 20,
+				"critical": 10,
+			},
+			"format": "{icon}   {capacity}%",
+			"format-charging": "  {capacity}%",
+			"format-icons": ["", "", "", "", ""],
+			"format-time": "{H}h {M}min left",
+			"tooltip-format": "{capacity}% {time}",
+			"tooltip-format-charging": "  Charging: {capacity}%",
+		},
+		"group/power": {
+		"orientation": "inherit",
+		"drawer": {
+			"transition-duration": 500,
+			"children-class": "not-power",
+			"transition-left-to-right": false,
+		},
+		"modules": [
+			"custom/power", // First element is the "group leader" and won't ever be hidden
+			"custom/lock",
+			"custom/reboot",
+		]
+	},
+	"custom/lock": {
+		"format": " 󰍁 ",
+		"tooltip": false,
+		"on-click": "swaylock"
+	},
+	"custom/reboot": {
+		"format": " 󰜉 ",
+		"tooltip": false,
+		"on-click": "reboot"
+
+	},
+	"custom/power": {
+		"format": "  ",
+		"tooltip": false,
+		"on-click": "halt"
+	}
+}
+	
